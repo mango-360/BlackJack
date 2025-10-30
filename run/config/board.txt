@@ -1,7 +1,2 @@
 BackgroundImg: background.bmp
-CircleImg: circle.bmp
-CircleRect: 0 0 270 270
-CrossImg: cross.bmp
-CrossRect: 0 0 270 270
-PlayerOnTurnImg: playerOnTurn.bmp
-PlayerOnTurnCoord: 100 938 352 57
+DealButton: dealButton.bmp 1500 600 162 83

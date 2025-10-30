@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <SDL.h>
+#include <vector>
 
 using namespace std;
 
@@ -69,7 +70,7 @@ struct DrawableWithSrc : public Drawable
 	SDL_Rect srcRect;
 };
 
-struct Chip : public Drawable
+struct DrawableWithValue : public Drawable
 {
 	int value;
 };
