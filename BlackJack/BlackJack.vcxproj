@@ -20,10 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Board.h" />
+    <ClInclude Include="..\include\Dealer.h" />
     <ClInclude Include="..\include\defines.h" />
     <ClInclude Include="..\include\Engine.h" />
     <ClInclude Include="..\include\Game.h" />
     <ClInclude Include="..\include\InputManager.h" />
+    <ClInclude Include="..\include\Player.h" />
     <ClInclude Include="..\include\Presenter.h" />
     <ClInclude Include="..\include\SoundManager.h" />
     <ClInclude Include="..\include\State.h" />
@@ -34,10 +36,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Board.cpp" />
+    <ClCompile Include="..\src\Dealer.cpp" />
     <ClCompile Include="..\src\Engine.cpp" />
     <ClCompile Include="..\src\Game.cpp" />
     <ClCompile Include="..\src\InputManager.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\Player.cpp" />
     <ClCompile Include="..\src\Presenter.cpp" />
     <ClCompile Include="..\src\SoundManager.cpp" />
     <ClCompile Include="..\src\State.cpp" />

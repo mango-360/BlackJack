@@ -69,6 +69,11 @@ struct DrawableWithSrc : public Drawable
 	SDL_Rect srcRect;
 };
 
+struct Chip : public Drawable
+{
+	int value;
+};
+
 enum SOUND
 {
 	BACKGROUND_MUSIC,
