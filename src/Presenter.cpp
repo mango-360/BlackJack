@@ -21,7 +21,7 @@ void Presenter::init()
 	m_SCREEN_WIDTH = 1920;
 	m_SCREEN_HEIGHT = 1080;
 
-	m_mainWindow = SDL_CreateWindow("SDL Template Project", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
+	m_mainWindow = SDL_CreateWindow("BlackJack", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
 		m_SCREEN_WIDTH, m_SCREEN_HEIGHT, 0);
 	
 	m_mainRenderer = SDL_CreateRenderer(m_mainWindow, -1, SDL_RENDERER_PRESENTVSYNC);
