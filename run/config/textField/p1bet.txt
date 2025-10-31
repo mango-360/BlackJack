@@ -1,0 +1,4 @@
+fontsize: 35
+bgrect: 1000 500 300 44
+color: 3
+img: p1bet.bmp

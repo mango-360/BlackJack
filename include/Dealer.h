@@ -7,8 +7,9 @@ class Dealer {
 	Dealer();
 	~Dealer();
 	void init();
-	void update();
-	void destroy();
+	void addCard(DrawableWithValue card);
+	void clearHand();
+	void calculatePoints();
 
 	int m_points;
 

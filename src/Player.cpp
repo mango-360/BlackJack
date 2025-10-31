@@ -10,17 +10,8 @@ Player::~Player()
 
 void Player::init()
 {
-	m_money = 1000;
+	m_money = INT_MAX;
 	m_bet = 0;
-}
-
-void Player::update()
-{
-
-}
-
-void Player::destroy()
-{
 }
 
 void Player::addCard(DrawableWithValue card)

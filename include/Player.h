@@ -8,8 +8,6 @@ public:
 	~Player();
 
 	void init();
-	void update();
-	void destroy();
 	void addCard(DrawableWithValue card);
 	void bet(int amount);
 	void clearHand();
