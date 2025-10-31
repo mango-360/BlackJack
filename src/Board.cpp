@@ -89,6 +89,9 @@ void Board::init()
 			m_cards[i + 39].value = i + 2;
 	}
 	betStage = true;
+
+	m_playerMoneyField.init("p1money.txt");
+	m_playerMoneyField.m_needToDrawBackground = false;
 }
 
 void Board::update()
@@ -110,6 +113,9 @@ void Board::update()
 		}
 	}
 	if (!betStage) printf("Button pressed");
+
+	m_playerMoneyField.update();
+	m_playerMoneyField.setText("Money: $" + to_string(1324));
 }
 
 void Board::draw()
@@ -117,8 +123,9 @@ void Board::draw()
 	drawObject(m_background);
 	drawObject(m_dealButton);
 	drawChips();
-	drawCards();
+	//drawCards();
 
+	m_playerMoneyField.draw();
 }
 
 void Board::destroy()

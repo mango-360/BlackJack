@@ -1,9 +1,11 @@
 #pragma once
 
 #include <string>
+
 #include "Engine.h"
 #include "Presenter.h"
 #include "Player.h"
+#include "TextField.h"
 
 const int MAXCHIPS = 5;
 
@@ -30,4 +32,6 @@ private:
 	bool betStage;
 
 	Player m_player;
+
+	TextField m_playerMoneyField;
 };

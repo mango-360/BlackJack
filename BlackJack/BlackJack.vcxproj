@@ -30,9 +30,11 @@
     <ClInclude Include="..\include\SoundManager.h" />
     <ClInclude Include="..\include\State.h" />
     <ClInclude Include="..\include\StateManager.h" />
+    <ClInclude Include="..\include\TextField.h" />
     <ClInclude Include="..\include\TitleScreen.h" />
     <ClInclude Include="..\include\WinScreen.h" />
     <ClInclude Include="..\include\World.h" />
+    <ClInclude Include="..\include\Writer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Board.cpp" />
@@ -46,9 +48,11 @@
     <ClCompile Include="..\src\SoundManager.cpp" />
     <ClCompile Include="..\src\State.cpp" />
     <ClCompile Include="..\src\StateManager.cpp" />
+    <ClCompile Include="..\src\TextField.cpp" />
     <ClCompile Include="..\src\TitleScreen.cpp" />
     <ClCompile Include="..\src\WinScreen.cpp" />
     <ClCompile Include="..\src\World.cpp" />
+    <ClCompile Include="..\src\Writer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -5,6 +5,7 @@ extern World world;
 
 SDL_Window* Presenter::m_mainWindow = nullptr;
 SDL_Renderer* Presenter::m_mainRenderer = nullptr;
+Writer* Presenter::m_writer = new Writer();
 int Presenter::m_SCREEN_WIDTH = 0;
 int Presenter::m_SCREEN_HEIGHT = 0;
 
@@ -21,12 +22,17 @@ void Presenter::init()
 	m_SCREEN_WIDTH = 1920;
 	m_SCREEN_HEIGHT = 1080;
 
+	SDL_Init(SDL_INIT_EVERYTHING);
+	TTF_Init();
+
 	m_mainWindow = SDL_CreateWindow("BlackJack", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
 		m_SCREEN_WIDTH, m_SCREEN_HEIGHT, 0);
 	
 	m_mainRenderer = SDL_CreateRenderer(m_mainWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	
 	improveRederer();
+
+	m_writer->init();
 }
 
 void Presenter::draw()

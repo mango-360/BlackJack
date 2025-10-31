@@ -1,0 +1,5 @@
+textrect: 95 211 44
+fontsize: 35
+bgrect: 95 211 300 44
+color: 4
+img: p1money.bmp

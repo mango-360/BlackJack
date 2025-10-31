@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <vector>
 
 using namespace std;
@@ -10,6 +11,8 @@ using namespace std;
 static const string IMG_FOLDER = "img\\";
 static const string CONFIG_FOLDER = "config\\";
 static const string SOUND_FOLDER = "sound\\";
+static const string FONT_FOLDER = "font\\";
+static const string TEXT_FIELD_FOLDER = "textField\\";
 
 struct float2
 {
@@ -88,4 +91,12 @@ enum GAME_STATE
 	TITLE_SCREEN = 1,
 	GAME = 2,
 	WIN_SCREEN = 3,
+};
+
+enum COLOR
+{
+	WHITE = 1,
+	BLACK = 2,
+	RED = 3,
+	ORANGE = 4,
 };
