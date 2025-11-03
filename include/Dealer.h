@@ -3,12 +3,15 @@
 #include "defines.h"
 
 class Dealer {
-	public:
+
+public:
 	Dealer();
 	~Dealer();
-	void init();
+	virtual void init();
 	void addCard(DrawableWithValue card);
-	void clearHand();
+
+protected:
+	virtual void clearHand();
 	void calculatePoints();
 
 	int m_points;

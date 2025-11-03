@@ -104,13 +104,13 @@
     <ClInclude Include="..\include\Dealer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\Writer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\TextField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

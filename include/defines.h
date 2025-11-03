@@ -14,6 +14,8 @@ static const string SOUND_FOLDER = "sound\\";
 static const string FONT_FOLDER = "font\\";
 static const string TEXT_FIELD_FOLDER = "textField\\";
 
+const int MAXCHIPS = 5;
+
 struct float2
 {
 	float x, y;

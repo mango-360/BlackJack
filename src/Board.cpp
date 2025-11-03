@@ -18,19 +18,18 @@ void Board::init()
 {
 	string configFile = "board.txt";
 	
-	string tmp, backgroundImg, dealButtonImg;
+	string tmp, backgroundImg, player1configFile;
 
 	fstream stream;
 
 	stream.open(CONFIG_FOLDER + configFile);
 
 	stream >> tmp >> backgroundImg;
-	stream >> tmp >> dealButtonImg >> m_dealButton.rect.x >> m_dealButton.rect.y >> m_dealButton.rect.w >> m_dealButton.rect.h;	
+	stream >> tmp >> player1configFile;
 
 	stream.close();
 
 	m_background = loadTexture(backgroundImg);
-	m_dealButton.texture = loadTexture(dealButtonImg);
 
 	initChips();
 	
@@ -38,12 +37,7 @@ void Board::init()
 	
 	betStage = true;
 
-	m_playerMoneyField.init("p1money.txt");
-	m_playerMoneyField.m_needToDrawBackground = false;
-	m_playerBetField.init("p1bet.txt");
-	m_playerBetField.m_needToDrawBackground = false;
-
-	m_player.init();
+	m_player.init(player1configFile);
 }
 
 void Board::initChips()
@@ -116,39 +110,26 @@ void Board::initCards()
 
 void Board::update()
 {
-	if (isMouseInRect(m_dealButton.rect) && InputManager::isMousePressed()) betStage = false;
+	if (isMouseInRect(m_player.m_dealButton.rect) && InputManager::isMousePressed()) betStage = false;
 	if (betStage)
 	{
-		for (int i = 0; i < MAXCHIPS; i++)
-		{
-			if (isMouseInRect(m_chips[i].rect) && InputManager::isMousePressed())
-			{
-				m_player.bet(m_chips[i].value);
-				SoundManager::playSound(X_PLACE);
-			}
-		}
+		m_player.update();
 	}
-
-	m_playerMoneyField.update();
-	m_playerMoneyField.setText("Money: $" + to_string(m_player.m_money));
-	m_playerBetField.update();
-	m_playerBetField.setText("$" + to_string(m_player.m_bet));
 }
 
 void Board::draw()
 {
 	drawObject(m_background);
-	drawObject(m_dealButton);
 	drawChips();
 
-	m_playerMoneyField.draw();
-	m_playerBetField.draw();
+	m_player.draw();
 }
 
 void Board::destroy()
 {
 	SDL_DestroyTexture(m_background);
-	m_playerMoneyField.destroy();
+
+	m_player.destroy();
 }
 
 void Board::drawChips()

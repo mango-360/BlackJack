@@ -1,2 +1,2 @@
 BackgroundImg: background.bmp
-DealButton: dealButton.bmp 1500 600 162 83
+Player1configFile: player1.txt
