@@ -10,8 +10,10 @@ public:
 	~Player();
 
 	void init(string configFile);
-	void update();
-	void draw();
+	void betUpdate();
+	void dealUpdate();
+	void betDraw();
+	void dealDraw();
 	void destroy();
 
 	Drawable m_dealButton;
@@ -22,17 +24,22 @@ private:
 	void addMoney();
 	void drawChipsBet();
 	void removeChipBet();
-	void resetChipsBet();
+	void clearBet();
+	void allInBet();
 
 
 	int m_money;
 	int m_bet;
 	int m_points;
 
-	vector<DrawableWithValue> m_hand;
 
 	pair<int,DrawableWithValue> m_ChipsBet[MAXCHIPS];
 
 	TextField m_playerMoneyField;
 	TextField m_playerBetField;
+	
+	Drawable m_allInButton;
+	Drawable m_clearBetButton;
+	Drawable m_hitButton;
+	Drawable m_standButton;
 };

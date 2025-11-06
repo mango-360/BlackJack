@@ -1,1 +1,5 @@
 DealButton: dealButton.bmp 1500 600 162 83
+AllInButton: AllIn.bmp 300 600 120 33
+ClearBetButton: clearBetButton.bmp 500 600 120 33
+hitButton: hitButton.bmp 400 300 167 80
+standButton: standButton.bmp 1500 300 166 87

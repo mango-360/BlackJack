@@ -27,7 +27,10 @@ private:
 	void drawCards();
 	void initPlayingCards();
 
-	void dealCards();
+	void dealInitialCards();
+	void animateInitialCards();
+	void dealCardToPlayer();
+	void dealCardToDealer();
 
 	SDL_Texture* m_background;
 
@@ -36,8 +39,11 @@ private:
 	Drawable m_cardBack;
 
 	bool betStage;
+	bool dealStage;
 
 	Player m_player;
+
+	Dealer m_dealer;
 
 	vector<DrawableWithValue> m_playingCards;
 };

@@ -13,6 +13,7 @@ static const string CONFIG_FOLDER = "config\\";
 static const string SOUND_FOLDER = "sound\\";
 static const string FONT_FOLDER = "font\\";
 static const string TEXT_FIELD_FOLDER = "textField\\";
+static const string PLAYER_FOLDER = "player\\";
 
 const int MAXCHIPS = 5;
 
@@ -78,6 +79,7 @@ struct DrawableWithSrc : public Drawable
 struct DrawableWithValue : public Drawable
 {
 	int value;
+	bool isDealt = false;
 };
 
 enum SOUND

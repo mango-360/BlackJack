@@ -12,18 +12,25 @@ Player::~Player()
 
 void Player::init(string configFile)
 {
-	string tmp, dealButtonImg;
+	string tmp, dealButtonImg, AllInImg, clearBetImg, hitButtonImg, standButtonImg;
 
 	fstream stream;
 
 	stream.open(CONFIG_FOLDER + configFile);
 
 	stream >> tmp >> dealButtonImg >> m_dealButton.rect.x >> m_dealButton.rect.y >> m_dealButton.rect.w >> m_dealButton.rect.h;
+	stream >> tmp >> AllInImg >> m_allInButton.rect.x >> m_allInButton.rect.y >> m_allInButton.rect.w >> m_allInButton.rect.h;
+	stream >> tmp >> clearBetImg >> m_clearBetButton.rect.x >> m_clearBetButton.rect.y >> m_clearBetButton.rect.w >> m_clearBetButton.rect.h;
+	stream >> tmp >> hitButtonImg >> m_hitButton.rect.x >> m_hitButton.rect.y >> m_hitButton.rect.w >> m_hitButton.rect.h;
+	stream >> tmp >> standButtonImg >> m_standButton.rect.x >> m_standButton.rect.y >> m_standButton.rect.w >> m_standButton.rect.h;
 
 	stream.close();
 
-	m_dealButton.texture = loadTexture(dealButtonImg);
-
+	m_dealButton.texture = loadTexture(PLAYER_FOLDER + dealButtonImg);
+	m_allInButton.texture = loadTexture(PLAYER_FOLDER + AllInImg);
+	m_clearBetButton.texture = loadTexture(PLAYER_FOLDER + clearBetImg);
+	m_hitButton.texture = loadTexture(PLAYER_FOLDER + hitButtonImg);
+	m_standButton.texture = loadTexture(PLAYER_FOLDER + standButtonImg);
 
 	m_playerMoneyField.init("p1money.txt");
 	m_playerMoneyField.m_needToDrawBackground = false;
@@ -38,17 +45,29 @@ void Player::init(string configFile)
 	{
 		DrawableWithValue tmpChip = world.m_stateManager.m_game->m_board.m_chips[i];
 
-		SDL_Rect tmpRect = { 500 + i * 70, 500, tmpChip.rect.w, tmpChip.rect.h };
+		SDL_Rect tmpRect = { (Presenter::m_SCREEN_WIDTH - 380) / 2 + i * 70, (Presenter::m_SCREEN_HEIGHT - tmpChip.rect.h) / 2, tmpChip.rect.w, tmpChip.rect.h }; 
 
 		m_ChipsBet[i] = { 0, tmpChip };
 		m_ChipsBet[i].second.rect = tmpRect;
 	}
+
+	m_cardStartPos = { 400, 800 };
 }
 
-void Player::update()
+void Player::betUpdate()
 {
 	bet();
 	removeChipBet();
+
+	if(isMouseInRect(m_allInButton.rect) && InputManager::isMousePressed())
+	{
+		allInBet();
+	}
+
+	if(isMouseInRect(m_clearBetButton.rect) && InputManager::isMousePressed())
+	{
+		clearBet();
+	}
 
 	m_playerMoneyField.update();
 	m_playerMoneyField.setText("Money: $" + to_string(m_money));
@@ -56,10 +75,28 @@ void Player::update()
 	m_playerBetField.setText("$" + to_string(m_bet));
 }
 
-void Player::draw()
+void Player::betDraw()
 {
 	drawChipsBet();
 	drawObject(m_dealButton);
+	drawObject(m_allInButton);
+	drawObject(m_clearBetButton);
+	m_playerMoneyField.draw();
+	m_playerBetField.draw();
+}
+
+void Player::dealUpdate()
+{
+
+}
+
+void Player::dealDraw()
+{
+	drawChipsBet();
+
+	drawObject(m_hitButton);
+	drawObject(m_standButton);
+
 	m_playerMoneyField.draw();
 	m_playerBetField.draw();
 }
@@ -177,6 +214,26 @@ void Player::removeChipBet()
 	}
 }
 
-void Player::resetChipsBet()
+void Player::clearBet()
 {
+	for (int i = 0; i < MAXCHIPS; i++)
+	{
+		m_ChipsBet[i].first = 0;
+	}
+
+	m_money += m_bet;
+	m_bet = 0;
+}
+
+void Player::allInBet()
+{
+	for (int i = MAXCHIPS - 1; i >= 0; i--)
+	{
+		while (m_money >= m_ChipsBet[i].second.value)
+		{
+			m_ChipsBet[i].first ++;
+			m_bet += m_ChipsBet[i].second.value;
+			m_money -= m_ChipsBet[i].second.value;
+		}
+	}
 }
