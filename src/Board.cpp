@@ -120,7 +120,7 @@ void Board::update()
 		return;
 	}
 
-	if (isMouseInRect(m_player.m_dealButton.rect) && InputManager::isMousePressed())
+	if (isMouseInRect(m_player.m_dealButton.rect) && InputManager::isMousePressed() && !dealStage)
 	{
 		if (!dealStage)
 		{
@@ -146,7 +146,6 @@ void Board::draw()
 	{
 		drawChips();
 		m_player.betDraw();
-		
 		return;
 	}
 

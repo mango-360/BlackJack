@@ -30,7 +30,7 @@ private:
 template <class Params>
 void drawObject(Params& value)
 {
-	Presenter::drawObject(value);
+    Presenter::drawObject(value);
 }
 
 SDL_Texture* loadTexture(string imgPath);

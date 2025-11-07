@@ -25,14 +25,13 @@ void Dealer::animateCardDeal(DrawableWithValue& card, int2 endPos)
 {
 	if (card.isDealt || card.rect.x == endPos.x) return;
 
-	int2 startPos = { 0, 0 };
-	int deltaX = endPos.x - startPos.x;
-	int deltaY = endPos.y - startPos.y;
+	float k = abs(endPos.x - card.rect.x) / abs(endPos.y - card.rect.y);
+	float l = abs(endPos.y - card.rect.y) / abs(endPos.x - card.rect.x);
 
-	int moveX = deltaX / m_moveSpeed;
-	int moveY = deltaY / m_moveSpeed;
+	int moveX = m_moveSpeed / sqrt(1 + l * l);
+	int moveY = m_moveSpeed / sqrt(1 + k * k);
 
-	if(abs(card.rect.x - endPos.x) <= moveX || abs(card.rect.y - endPos.y) <= moveY)
+	if (m_moveSpeed >= abs(endPos.x - card.rect.x) || m_moveSpeed >= abs(endPos.y - card.rect.y))
 	{
 		card.rect.x = endPos.x;
 		card.rect.y = endPos.y;
@@ -41,10 +40,8 @@ void Dealer::animateCardDeal(DrawableWithValue& card, int2 endPos)
 		return;
 	}
 
-	card.rect.x += moveX;
-	card.rect.y += moveY;
-
-	cout << "Moving with " << moveX << " " << moveY << endl;
+	card.rect.x += (endPos.x >= card.rect.x) ? moveX : -moveX;
+	card.rect.y += (endPos.y >= card.rect.y) ? moveY : -moveY;
 }
 
 void Dealer::animateHand(int2 endPos)
@@ -61,9 +58,10 @@ void Dealer::animateHand(int2 endPos)
 
 void Dealer::drawHand()
 {
-	for (DrawableWithValue& card : m_hand)
+	for (const DrawableWithValue& card : m_hand)
 	{
 		drawObject(card);
+		if (!card.isDealt) break; 
 	}
 }
 

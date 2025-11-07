@@ -24,7 +24,6 @@ private:
 	void initChips();
 	void initCards();
 	void drawChips();
-	void drawCards();
 	void initPlayingCards();
 
 	void dealInitialCards();

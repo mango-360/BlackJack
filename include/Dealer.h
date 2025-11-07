@@ -22,5 +22,5 @@ protected:
 	void animateCardDeal(DrawableWithValue& card, int2 endPos);
 
 	int m_points;
-	int m_moveSpeed = 100;
+	int m_moveSpeed = 5;
 };
