@@ -18,6 +18,8 @@ public:
 	void update();
 	void draw();
 	void destroy();
+	void dealCardToPlayer();
+	void dealCardToDealer();
 
 	DrawableWithValue m_chips[MAXCHIPS];
 private:
@@ -28,8 +30,6 @@ private:
 
 	void dealInitialCards();
 	void animateInitialCards();
-	void dealCardToPlayer();
-	void dealCardToDealer();
 
 	SDL_Texture* m_background;
 
@@ -39,6 +39,7 @@ private:
 
 	bool betStage;
 	bool dealStage;
+	bool resultStage;
 
 	Player m_player;
 

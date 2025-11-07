@@ -14,14 +14,16 @@ public:
 	void dealUpdate();
 	void betDraw();
 	void dealDraw();
+	void drawResultStage();
 	void destroy();
 
 	Drawable m_dealButton;
+	Drawable m_standButton;
 
 private:
 	void bet();
-	void clearHand();
 	void addMoney();
+	void clearHand();
 	void drawChipsBet();
 	void removeChipBet();
 	void clearBet();
@@ -30,8 +32,6 @@ private:
 
 	int m_money;
 	int m_bet;
-	int m_points;
-
 
 	pair<int,DrawableWithValue> m_ChipsBet[MAXCHIPS];
 
@@ -41,5 +41,4 @@ private:
 	Drawable m_allInButton;
 	Drawable m_clearBetButton;
 	Drawable m_hitButton;
-	Drawable m_standButton;
 };

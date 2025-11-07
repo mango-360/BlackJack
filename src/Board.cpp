@@ -37,6 +37,7 @@ void Board::init()
 	
 	betStage = true;
 	dealStage = false;
+	resultStage = false;
 
 	m_player.init(player1configFile);
 	m_dealer.init();
@@ -62,10 +63,13 @@ void Board::initCards()
 {
 	m_cardBack.texture = loadTexture("Cards\\back_dark.bmp");
 
+	// Starting rectangle for all cards (off-screen start position)
+	SDL_Rect startRect = { -200, -280, 200, 280 };
+
 	for (int i = 0; i < 13; i++)
 	{
 		m_cards[i].texture = loadTexture("Cards\\clubs_" + to_string(i + 2) + ".bmp");
-		m_cards[i].rect = { 0, 0, 100, 140 };
+		m_cards[i].rect = startRect;
 		if (i == 9)
 			m_cards[i].value = 11;
 		else if (i > 9)
@@ -76,7 +80,7 @@ void Board::initCards()
 	for (int i = 0; i < 13; i++)
 	{
 		m_cards[i + 13].texture = loadTexture("Cards\\diamonds_" + to_string(i + 2) + ".bmp");
-		m_cards[i + 13].rect = { 0, 0, 100, 140 };
+		m_cards[i + 13].rect = startRect;
 		if (i == 9)
 			m_cards[i + 13].value = 11;
 		else if (i > 9)
@@ -87,7 +91,7 @@ void Board::initCards()
 	for (int i = 0; i < 13; i++)
 	{
 		m_cards[i + 26].texture = loadTexture("Cards\\hearts_" + to_string(i + 2) + ".bmp");
-		m_cards[i + 26].rect = { 0, 0, 100, 140 };
+		m_cards[i + 26].rect = startRect;
 		if (i == 9)
 			m_cards[i + 26].value = 11;
 		else if (i > 9)
@@ -98,7 +102,7 @@ void Board::initCards()
 	for (int i = 0; i < 13; i++)
 	{
 		m_cards[i + 39].texture = loadTexture("Cards\\spades_" + to_string(i + 2) + ".bmp");
-		m_cards[i + 39].rect = { 0, 0, 100, 140 };
+		m_cards[i + 39].rect = startRect;
 		if (i == 9)
 			m_cards[i + 39].value = 11;
 		else if (i > 9)
@@ -125,16 +129,45 @@ void Board::update()
 		if (!dealStage)
 		{
 			dealInitialCards();
+			m_dealer.subtractFirstCardPoints();
 		}
 
 		dealStage = true;
+	}
+
+	if (InputManager::isMousePressed() && isMouseInRect(m_player.m_standButton.rect) && dealStage || m_player.getPoints() >= 21)
+	{
+		dealStage = false;
+		resultStage = true;
+		m_dealer.m_hand[0].texture = m_dealer.m_hand[0].saveTexture;
+		m_dealer.calculatePoints();
+		m_dealer.updatePoints();
 	}
 
 	if (dealStage)
 	{
 		m_player.dealUpdate();
 		animateInitialCards();
+		m_dealer.updatePoints();
+
+		if (m_dealer.m_hand[1].isDealt)
+		{
+			m_dealer.animateHand(m_dealer.m_cardStartPos);
+			m_player.animateHand(m_player.m_cardStartPos);
+		}
 		return;
+	}
+
+	if(resultStage)
+	{
+		for(DrawableWithValue & card : m_dealer.m_hand)
+		{
+			if(!card.isDealt)
+			{
+				m_dealer.animateHand(m_dealer.m_cardStartPos);
+				return;
+			}
+		}
 	}
 }
 
@@ -152,6 +185,17 @@ void Board::draw()
 	if (dealStage)
 	{
 		m_player.dealDraw();
+		m_dealer.drawPoints();
+
+		m_player.drawHand();
+		m_dealer.drawHand();
+		return;
+	}
+
+	if(resultStage)
+	{
+		m_player.drawResultStage();
+		m_dealer.drawPoints();
 
 		m_player.drawHand();
 		m_dealer.drawHand();
@@ -193,6 +237,10 @@ void Board::dealInitialCards()
 {
 	dealCardToPlayer();
 	dealCardToDealer();
+
+	m_dealer.m_hand[0].saveTexture = m_dealer.m_hand[0].texture;
+	m_dealer.m_hand[0].texture = m_cardBack.texture;
+
 	dealCardToPlayer();
 	dealCardToDealer();
 }
@@ -231,5 +279,4 @@ void Board::dealCardToDealer()
 {
 	m_dealer.addCard(m_playingCards.back());
 	m_playingCards.pop_back();
-
 }

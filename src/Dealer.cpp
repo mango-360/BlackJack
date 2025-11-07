@@ -13,12 +13,15 @@ void Dealer::init()
 {
 	m_points = 0;
 	m_hand.clear();
-	m_cardStartPos = { 400, 200 };
+	m_cardStartPos = { 600, 50 };
+
+	m_pointsField.init("dealerPoints.txt");
 }
 
 void Dealer::addCard(DrawableWithValue card)
 {
 	m_hand.push_back(card);
+	calculatePoints();
 }
 
 void Dealer::animateCardDeal(DrawableWithValue& card, int2 endPos)
@@ -60,9 +63,27 @@ void Dealer::drawHand()
 {
 	for (const DrawableWithValue& card : m_hand)
 	{
-		drawObject(card);
+		Drawable tmp = card;
+
+		drawObject(tmp);
 		if (!card.isDealt) break; 
 	}
+}
+
+void Dealer::drawPoints()
+{
+	m_pointsField.draw();	
+}
+
+void Dealer::updatePoints()
+{
+	m_pointsField.setText("Dealer Points: " + to_string(m_points));
+	m_pointsField.update();
+}
+
+int Dealer::getPoints()
+{
+	return m_points;
 }
 
 void Dealer::clearHand()
@@ -88,3 +109,7 @@ void Dealer::calculatePoints()
 	}
 }
 
+void Dealer::subtractFirstCardPoints()
+{
+	m_points -= m_hand[0].value;
+}

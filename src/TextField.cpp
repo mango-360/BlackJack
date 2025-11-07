@@ -26,7 +26,7 @@ void TextField::init(string configFile)
 
 	m_background.texture = loadTexture(TEXT_FIELD_FOLDER + background);
 
-	m_needToDrawBackground = true;
+	m_needToDrawBackground = false;
 }
 
 void TextField::update()

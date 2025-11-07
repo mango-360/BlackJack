@@ -51,7 +51,9 @@ void Player::init(string configFile)
 		m_ChipsBet[i].second.rect = tmpRect;
 	}
 
-	m_cardStartPos = { 400, 800 };
+	m_cardStartPos = { 600, 750 };
+
+	m_pointsField.init("playerPoints.txt");
 }
 
 void Player::betUpdate()
@@ -87,7 +89,14 @@ void Player::betDraw()
 
 void Player::dealUpdate()
 {
+	if(InputManager::isMousePressed() && isMouseInRect(m_hitButton.rect))
+	{
+		world.m_stateManager.m_game->m_board.dealCardToPlayer();
+		SoundManager::playSound(X_PLACE);
+	}
 
+	m_pointsField.setText("Player: " + to_string(m_points));
+	m_pointsField.update();
 }
 
 void Player::dealDraw()
@@ -99,6 +108,16 @@ void Player::dealDraw()
 
 	m_playerMoneyField.draw();
 	m_playerBetField.draw();
+	m_pointsField.draw();
+}
+
+void Player::drawResultStage()
+{
+	drawChipsBet();
+
+	m_playerMoneyField.draw();
+	m_playerBetField.draw();
+	m_pointsField.draw();
 }
 
 void Player::destroy()

@@ -80,6 +80,7 @@ struct DrawableWithValue : public Drawable
 {
 	int value;
 	bool isDealt = false;
+	SDL_Texture* saveTexture = nullptr;
 };
 
 enum SOUND
