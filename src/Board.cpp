@@ -18,7 +18,7 @@ void Board::init()
 {
 	string configFile = "board.txt";
 	
-	string tmp, backgroundImg, player1configFile;
+	string tmp, backgroundImg, player1configFile, youWinImg, dealerWinsImg;
 
 	fstream stream;
 
@@ -26,10 +26,14 @@ void Board::init()
 
 	stream >> tmp >> backgroundImg;
 	stream >> tmp >> player1configFile;
+	stream >> tmp >> youWinImg >> m_youWin.rect.x >> m_youWin.rect.y >> m_youWin.rect.w >> m_youWin.rect.h;
+	stream >> tmp >> dealerWinsImg >> m_dealerWins.rect.x >> m_dealerWins.rect.y >> m_dealerWins.rect.w >> m_dealerWins.rect.h;
 
 	stream.close();
 
 	m_background = loadTexture(backgroundImg);
+	m_youWin.texture = loadTexture(youWinImg);
+	m_dealerWins.texture = loadTexture(dealerWinsImg);
 
 	initChips();
 	
@@ -37,7 +41,9 @@ void Board::init()
 	
 	betStage = true;
 	dealStage = false;
+	dealerDealStage = false;
 	resultStage = false;
+	winStageDone = false;
 
 	m_player.init(player1configFile);
 	m_dealer.init();
@@ -135,7 +141,16 @@ void Board::update()
 		dealStage = true;
 	}
 
-	if (InputManager::isMousePressed() && isMouseInRect(m_player.m_standButton.rect) && dealStage || m_player.getPoints() >= 21)
+	if (InputManager::isMousePressed() && isMouseInRect(m_player.m_standButton.rect) && dealStage && m_player.m_allCardsDealt && m_dealer.m_allCardsDealt)
+	{
+		dealStage = false;
+		dealerDealStage = true;
+		m_dealer.m_hand[0].texture = m_dealer.m_hand[0].saveTexture;
+		m_dealer.calculatePoints();
+		m_dealer.updatePoints();
+	}
+
+	if (m_player.getPoints() >= 21 && dealStage && m_dealer.m_allCardsDealt && m_player.m_allCardsDealt)
 	{
 		dealStage = false;
 		resultStage = true;
@@ -158,16 +173,39 @@ void Board::update()
 		return;
 	}
 
+	if (dealerDealStage)
+	{
+		if (m_dealer.getPoints() < 17 && m_dealer.getPoints() < m_player.getPoints())
+		{
+			dealCardToDealer();
+			m_dealer.calculatePoints();
+			m_dealer.updatePoints();
+		}
+		else if(m_dealer.m_allCardsDealt)
+		{
+			dealerDealStage = false;
+			resultStage = true;
+		}
+		m_dealer.animateHand(m_dealer.m_cardStartPos);
+		return;
+	}
+
 	if(resultStage)
 	{
-		for(DrawableWithValue & card : m_dealer.m_hand)
+		if ((m_player.getPoints() > m_dealer.getPoints() && m_player.getPoints() <= 21) || m_dealer.getPoints() > 21)
 		{
-			if(!card.isDealt)
-			{
-				m_dealer.animateHand(m_dealer.m_cardStartPos);
-				return;
-			}
+			m_winner = 1;
 		}
+		if ((m_player.getPoints() < m_dealer.getPoints() && m_dealer.getPoints() <= 21) || m_player.getPoints() > 21)
+		{
+			m_winner = 2;
+		}
+		if(m_player.getPoints() == m_dealer.getPoints())
+		{
+			m_winner = 0;
+		}
+
+		winStage();
 	}
 }
 
@@ -192,6 +230,15 @@ void Board::draw()
 		return;
 	}
 
+	if(dealerDealStage)
+	{
+		m_player.drawResultStage();
+		m_dealer.drawPoints();
+
+		m_player.drawHand();
+		m_dealer.drawHand();
+	}
+
 	if(resultStage)
 	{
 		m_player.drawResultStage();
@@ -200,6 +247,40 @@ void Board::draw()
 		m_player.drawHand();
 		m_dealer.drawHand();
 	}
+
+	if(winStageDone)
+	{
+		int timer = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+
+		m_player.drawResultStage();
+		m_dealer.drawPoints();
+
+		m_player.drawHand();
+		m_dealer.drawHand();
+
+		if (m_winner == 1)
+		{
+			drawObject(m_youWin);
+		}
+		if (m_winner == 2)
+		{
+			drawObject(m_dealerWins);
+		}
+
+		if (m_winner == 0)
+		{
+			drawObject(m_youWin);
+			drawObject(m_dealerWins);
+		}
+
+		if(timer - now_seconds >= 3)
+		{
+			winStageDone = false;
+			betStage = true;
+			m_player.clearHand();
+			m_dealer.clearHand();
+		}
+	}
 }
 
 void Board::destroy()
@@ -207,6 +288,32 @@ void Board::destroy()
 	SDL_DestroyTexture(m_background);
 
 	m_player.destroy();
+}
+
+void Board::winStage()
+{
+	if (m_winner == 1)
+	{
+		m_player.addMoney();
+		m_player.addMoney();
+		cout << "Player wins!" << endl;
+	}
+
+	if (m_winner == 2)
+	{
+		cout << "Dealer wins!" << endl;
+	}
+
+	if (m_winner == 0)
+	{
+		m_player.addMoney();
+		cout << "It's a tie!" << endl;
+	}
+
+	resultStage = false;
+	winStageDone = true;
+
+	now_seconds = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
 }
 
 void Board::drawChips()
@@ -273,10 +380,12 @@ void Board::dealCardToPlayer()
 {
 	m_player.addCard(m_playingCards.back());
 	m_playingCards.pop_back();
+	m_player.m_allCardsDealt = false;
 }
 
 void Board::dealCardToDealer()
 {
 	m_dealer.addCard(m_playingCards.back());
 	m_playingCards.pop_back();
+	m_dealer.m_allCardsDealt = false;
 }

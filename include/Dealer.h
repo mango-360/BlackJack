@@ -24,8 +24,10 @@ public:
 	int2 m_cardStartPos;
 
 	void calculatePoints();
-protected:
 	virtual void clearHand();
+
+	bool m_allCardsDealt;
+protected:
 	void animateCardDeal(DrawableWithValue& card, int2 endPos);
 
 	int m_points;

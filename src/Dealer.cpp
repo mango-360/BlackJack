@@ -16,6 +16,8 @@ void Dealer::init()
 	m_cardStartPos = { 600, 50 };
 
 	m_pointsField.init("dealerPoints.txt");
+	
+	m_allCardsDealt = true;
 }
 
 void Dealer::addCard(DrawableWithValue card)
@@ -40,6 +42,17 @@ void Dealer::animateCardDeal(DrawableWithValue& card, int2 endPos)
 		card.rect.y = endPos.y;
 
 		card.isDealt = true;
+
+		for(DrawableWithValue& c : m_hand)
+		{
+			m_allCardsDealt = true;
+
+			if(!c.isDealt)
+			{
+				m_allCardsDealt = false;
+			}
+		}
+
 		return;
 	}
 

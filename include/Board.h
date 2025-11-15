@@ -7,6 +7,9 @@
 #include "Engine.h"
 #include "Presenter.h"
 #include "Player.h"
+#include <chrono>
+
+using namespace chrono;
 
 class Board
 {
@@ -22,6 +25,8 @@ public:
 	void dealCardToDealer();
 
 	DrawableWithValue m_chips[MAXCHIPS];
+
+	long long now_seconds;
 private:
 	void initChips();
 	void initCards();
@@ -30,20 +35,27 @@ private:
 
 	void dealInitialCards();
 	void animateInitialCards();
+	void winStage();
 
 	SDL_Texture* m_background;
 
 	DrawableWithValue m_cards[52];
 
 	Drawable m_cardBack;
+	Drawable m_youWin;
+	Drawable m_dealerWins;
 
 	bool betStage;
 	bool dealStage;
+	bool dealerDealStage;
 	bool resultStage;
+	bool winStageDone;
 
 	Player m_player;
 
 	Dealer m_dealer;
 
 	vector<DrawableWithValue> m_playingCards;
+
+	int m_winner;
 };

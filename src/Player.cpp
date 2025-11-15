@@ -54,6 +54,8 @@ void Player::init(string configFile)
 	m_cardStartPos = { 600, 750 };
 
 	m_pointsField.init("playerPoints.txt");
+
+	m_allCardsDealt = true;
 }
 
 void Player::betUpdate()
@@ -89,7 +91,7 @@ void Player::betDraw()
 
 void Player::dealUpdate()
 {
-	if(InputManager::isMousePressed() && isMouseInRect(m_hitButton.rect))
+	if (InputManager::isMousePressed() && isMouseInRect(m_hitButton.rect) && this->m_allCardsDealt && Dealer::m_allCardsDealt && m_points < 21)
 	{
 		world.m_stateManager.m_game->m_board.dealCardToPlayer();
 		SoundManager::playSound(X_PLACE);
@@ -191,11 +193,18 @@ void Player::clearHand()
 	m_hand.clear();
 	m_points = 0;
 	m_bet = 0;
+
+	for (int i = 0; i < MAXCHIPS; i++)
+	{
+		m_ChipsBet[i].first = 0;
+	}
 }
 
 void Player::addMoney()
 {
-	m_money += m_bet * 2;
+	m_money += m_bet;
+	m_playerMoneyField.update();
+	m_playerMoneyField.setText("Money: $" + to_string(m_money));
 }
 
 void Player::drawChipsBet()

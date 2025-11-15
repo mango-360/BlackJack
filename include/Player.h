@@ -16,14 +16,14 @@ public:
 	void dealDraw();
 	void drawResultStage();
 	void destroy();
+	void addMoney();
+	void clearHand();
 
 	Drawable m_dealButton;
 	Drawable m_standButton;
 
 private:
 	void bet();
-	void addMoney();
-	void clearHand();
 	void drawChipsBet();
 	void removeChipBet();
 	void clearBet();

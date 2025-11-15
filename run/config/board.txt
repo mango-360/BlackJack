@@ -1,2 +1,4 @@
 BackgroundImg: background.bmp
 Player1configFile: player1.txt
+YouWin: youWin.bmp 800 600 369 90
+DealerWins: dealerWins.bmp 800 0 530 140
