@@ -18,6 +18,8 @@ public:
 	void destroy();
 	void addMoney();
 	void clearHand();
+	int getMoney() { return m_money; }
+	int getBet() { return m_bet; }
 
 	Drawable m_dealButton;
 	Drawable m_standButton;

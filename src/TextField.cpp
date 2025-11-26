@@ -18,7 +18,7 @@ void TextField::init(string configFile)
 	stream.open(CONFIG_FOLDER + TEXT_FIELD_FOLDER + configFile);
 
 	stream >> tmp >> m_fontSize;
-	stream >> tmp >> m_background.rect.x >> m_background.rect.y >> m_background.rect.w >> m_background.rect.h;
+	stream >> tmp >> m_background.rect;
 	stream >> tmp >> m_color;
 	stream >> tmp >> background;
 
@@ -70,8 +70,8 @@ void TextField::setText(string text)
 
 		auto result = Presenter::m_writer->getText(m_textString, (COLOR)m_color, m_fontSize);
 
-		m_text.rect.x = m_background.rect.x + (m_background.rect.w - result.first.x) / 2;
-		m_text.rect.y = m_background.rect.y + (m_background.rect.h - result.first.y) / 2;
+		m_text.rect.x = m_background.rect.x;// + (m_background.rect.w - result.first.x) / 2;
+		m_text.rect.y = m_background.rect.y;// + (m_background.rect.h - result.first.y) / 2;
 		m_text.rect.w = result.first.x;
 		m_text.rect.h = result.first.y;
 

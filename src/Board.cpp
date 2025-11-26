@@ -18,7 +18,7 @@ void Board::init()
 {
 	string configFile = "board.txt";
 	
-	string tmp, backgroundImg, player1configFile, youWinImg, dealerWinsImg;
+	string tmp, backgroundImg, player1configFile;
 
 	fstream stream;
 
@@ -26,14 +26,14 @@ void Board::init()
 
 	stream >> tmp >> backgroundImg;
 	stream >> tmp >> player1configFile;
-	stream >> tmp >> youWinImg >> m_youWin.rect.x >> m_youWin.rect.y >> m_youWin.rect.w >> m_youWin.rect.h;
-	stream >> tmp >> dealerWinsImg >> m_dealerWins.rect.x >> m_dealerWins.rect.y >> m_dealerWins.rect.w >> m_dealerWins.rect.h;
+	stream >> tmp >> m_youWin;
+	stream >> tmp >> m_dealerWins;
 
 	stream.close();
 
 	m_background = loadTexture(backgroundImg);
-	m_youWin.texture = loadTexture(youWinImg);
-	m_dealerWins.texture = loadTexture(dealerWinsImg);
+	m_youWin.texture = loadTexture(m_youWin.img);
+	m_dealerWins.texture = loadTexture(m_dealerWins.img);
 
 	initChips();
 	
@@ -47,6 +47,14 @@ void Board::init()
 
 	m_player.init(player1configFile);
 	m_dealer.init();
+
+	moneyWon = 0;
+	moneyLost = 0;
+	totalMoney = 0;
+	roundsPlayed = 0;
+	roundsWon = 0;
+
+	winRate = 0.0f;
 }
 
 void Board::initChips()
@@ -122,6 +130,14 @@ void Board::initCards()
 
 void Board::update()
 {
+	if (betStage && (InputManager::isKeyPressed(SDL_SCANCODE_Q) || (m_player.getMoney() <= 0 && m_player.getBet() <= 0)))
+	{
+		totalMoney = m_player.getMoney();
+		winRate = (roundsPlayed > 0) ? ((float)roundsWon / (float)roundsPlayed) * 100.0f : 0.0f;
+		world.m_stateManager.changeState(WIN_SCREEN);
+		return;
+	}
+
 	if (isMouseInRect(m_player.m_dealButton.rect) && InputManager::isMousePressed()) betStage = false;
 
 	if (betStage)
@@ -192,13 +208,18 @@ void Board::update()
 
 	if(resultStage)
 	{
+		roundsPlayed++;
+
 		if ((m_player.getPoints() > m_dealer.getPoints() && m_player.getPoints() <= 21) || m_dealer.getPoints() > 21)
 		{
 			m_winner = 1;
+			moneyWon += m_player.getBet();
+			roundsWon++;
 		}
 		if ((m_player.getPoints() < m_dealer.getPoints() && m_dealer.getPoints() <= 21) || m_player.getPoints() > 21)
 		{
 			m_winner = 2;
+			moneyLost += m_player.getBet();
 		}
 		if(m_player.getPoints() == m_dealer.getPoints())
 		{

@@ -1,0 +1,3 @@
+fontsize: 128
+bgrect: 990 750 500 128
+color: 1

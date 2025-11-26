@@ -27,6 +27,14 @@ public:
 	DrawableWithValue m_chips[MAXCHIPS];
 
 	long long now_seconds;
+
+	int moneyWon;
+	int moneyLost;
+	int totalMoney;
+	int roundsPlayed;
+	int roundsWon;
+
+	float winRate;
 private:
 	void initChips();
 	void initCards();

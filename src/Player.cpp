@@ -12,31 +12,30 @@ Player::~Player()
 
 void Player::init(string configFile)
 {
-	string tmp, dealButtonImg, AllInImg, clearBetImg, hitButtonImg, standButtonImg;
+	string tmp;
 
 	fstream stream;
 
 	stream.open(CONFIG_FOLDER + configFile);
 
-	stream >> tmp >> dealButtonImg >> m_dealButton.rect.x >> m_dealButton.rect.y >> m_dealButton.rect.w >> m_dealButton.rect.h;
-	stream >> tmp >> AllInImg >> m_allInButton.rect.x >> m_allInButton.rect.y >> m_allInButton.rect.w >> m_allInButton.rect.h;
-	stream >> tmp >> clearBetImg >> m_clearBetButton.rect.x >> m_clearBetButton.rect.y >> m_clearBetButton.rect.w >> m_clearBetButton.rect.h;
-	stream >> tmp >> hitButtonImg >> m_hitButton.rect.x >> m_hitButton.rect.y >> m_hitButton.rect.w >> m_hitButton.rect.h;
-	stream >> tmp >> standButtonImg >> m_standButton.rect.x >> m_standButton.rect.y >> m_standButton.rect.w >> m_standButton.rect.h;
+	stream >> tmp >> m_dealButton;
+	stream >> tmp >> m_allInButton;
+	stream >> tmp >> m_clearBetButton;
+	stream >> tmp >> m_hitButton;
+	stream >> tmp >> m_standButton;
 
 	stream.close();
 
-	m_dealButton.texture = loadTexture(PLAYER_FOLDER + dealButtonImg);
-	m_allInButton.texture = loadTexture(PLAYER_FOLDER + AllInImg);
-	m_clearBetButton.texture = loadTexture(PLAYER_FOLDER + clearBetImg);
-	m_hitButton.texture = loadTexture(PLAYER_FOLDER + hitButtonImg);
-	m_standButton.texture = loadTexture(PLAYER_FOLDER + standButtonImg);
+	m_dealButton.texture = loadTexture(PLAYER_FOLDER + m_dealButton.img);
+	m_allInButton.texture = loadTexture(PLAYER_FOLDER + m_allInButton.img);
+	m_clearBetButton.texture = loadTexture(PLAYER_FOLDER + m_clearBetButton.img);
+	m_hitButton.texture = loadTexture(PLAYER_FOLDER + m_hitButton.img);
+	m_standButton.texture = loadTexture(PLAYER_FOLDER + m_standButton.img);
 
 	m_playerMoneyField.init("p1money.txt");
 	m_playerMoneyField.m_needToDrawBackground = false;
 	m_playerBetField.init("p1bet.txt");
 	m_playerBetField.m_needToDrawBackground = false;
-
 
 	m_money = 1000;
 	m_bet = 0;
